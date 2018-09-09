@@ -36,16 +36,20 @@ public class StackQueue {
         private E[] elements;
         // head : deQueue를 하면 나갈 element
         // tail : enQueue를 하면 들어올 element
-        private int head, tail;
+        private int head, tail, size;
 
         public Queue(int size) {
             elements = (E[]) new Object[size];
         }
 
         public E deQueue() {
-            // head가 tail보다 클 경우 -> 자료가 없다
-            if (head > tail)
+            if (size == 0) {
                 throw new IndexOutOfBoundsException();
+            }
+            // head가 tail보다 클 경우 -> 자료가 없다
+//            if (head > tail)
+//                throw new IndexOutOfBoundsException();
+            size--;
             return elements[head++];
 
         }
@@ -54,6 +58,11 @@ public class StackQueue {
             // 사이즈를 넘어섰을 때
             if(tail + 1 >= elements.length)
                 throw new IndexOutOfBoundsException();
+            
+            // size가 가득 찼을 때
+            if (size == elements.length) throw new IndexOutOfBoundsException();
+            // 비어있는 곳에 tail을 붙이려고 나머지 연산을 한다.
+            tail = ++tail % elements.length;
             // 증가시킨 tail값에 element를 넣어준다.
             elements[++tail] = element;
         }
