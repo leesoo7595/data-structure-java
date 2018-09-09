@@ -1,5 +1,7 @@
 package com.isooproject;
 
+import java.util.NoSuchElementException;
+
 public class StackQueue {
 
     // 맨 위에만 추가해주고 가져간다.
@@ -29,6 +31,32 @@ public class StackQueue {
         }
     }
 
-    
+    // FIFO : 선입선출, 먼저 온 사람이 먼저 나간다.
+    static class  Queue<E> {
+        private E[] elements;
+        // head : deQueue를 하면 나갈 element
+        // tail : enQueue를 하면 들어올 element
+        private int head, tail;
+
+        public Queue(int size) {
+            elements = (E[]) new Object[size];
+        }
+
+        public E deQueue() {
+            // head가 tail보다 클 경우 -> 자료가 없다
+            if (head > tail)
+                throw new IndexOutOfBoundsException();
+            return elements[head++];
+
+        }
+
+        public void enQueue(E element) {
+            // 사이즈를 넘어섰을 때
+            if(tail + 1 >= elements.length)
+                throw new IndexOutOfBoundsException();
+            // 증가시킨 tail값에 element를 넣어준다.
+            elements[++tail] = element;
+        }
+    }
 
 }
