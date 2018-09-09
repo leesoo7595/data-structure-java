@@ -4,8 +4,8 @@ import java.util.NoSuchElementException;
 
 // T: Type, E: Element, K: Key, V: Value
 public class MyArrayList<E> {
-    // 하나의 배열을 만들때, DEFAULT_SIZE로 100을 둔다.
-    private static final int DEFAULT_SIZE = 100;
+    // 하나의 배열을 만들때, DEFAULT_SIZE로 64 둔다.
+    private static final int DEFAULT_SIZE = 64;
 
     // 내부에 배열을 가지고 있다.
     private Object[] elements;
@@ -49,19 +49,35 @@ public class MyArrayList<E> {
         size++;
     }
 
-    // size를 늘려주는 함수
-    private void ensuringSize() {
-        // size가 elements.length보다 작으면 그냥 반환
-        if (size < elements.length) return;
-
-        // tempSize를 두 배로 늘릴 때, Integer의 max_value(21억개)를 넘어서는지 체크
-        int tempSize = elements.length * 2 < Integer.MAX_VALUE ? elements.length * 2 : Integer.MAX_VALUE;
-        Object[] temp = new Object[tempSize];
-        // 옮겨주는 작업 필요
-        // elements를 0번째 배열부터 temp로 0번째부터 elements.length까지 카피한다.
-        System.arraycopy(elements, 0, temp, 0, elements.length);
-        elements = temp;
+    // 데이터를 삭제하는 함수
+    public E delete(int index) {
+        // index가 있는지 없는지 get함수로 확인
+        E result = get(index);
+        // 사이즈 줄일 필요있는지 체크
+        ensuringSize();
+        // index번째 이전까지 그냥 복사
+        System.arraycopy(elements, 0, elements, 0, index);
+        // index번째를 지우고!(--size) 나서 나머지 한 칸씩 left shift
+        System.arraycopy(elements, index + 1, elements, index, --size - index);
+        return result;
     }
 
+    // size를 늘려주는 함수
+    private void ensuringSize() {
+        // size가 elements.length와 같거나 크면 사이즈 늘리기
+        if (size >= elements.length) {
+            // tempSize를 두 배로 늘릴 때, Integer의 max_value(21억개)를 넘어서는지 체크
+            int tempSize = elements.length * 2 < Integer.MAX_VALUE ? elements.length * 2 : Integer.MAX_VALUE;
+            Object[] temp = new Object[tempSize];
+            // 옮겨주는 작업 필요
+            // elements를 0번째 배열부터 temp로 0번째부터 elements.length까지 카피한다.
+            System.arraycopy(elements, 0, temp, 0, elements.length);
+            elements = temp;
+        } else if (size - 1 <= elements.length / 4) {
+            Object[] temp = new Object[elements.length / 2];
+            System.arraycopy(elements, 0, temp, 0, size);
+            elements = temp;
+        }
+    }
 
 }
