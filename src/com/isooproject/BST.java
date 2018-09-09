@@ -46,6 +46,46 @@ public class BST<K extends Comparable, V> {
         return min(node.left);
     }
 
+    // 최소값을 갱신(삭제)할 때 쓰는 함수
+    public void deleteMin() {
+        if (root == null) return;
+        root = deleteMin(root);
+    }
+
+    // root 기준으로 재귀적으로 탐색하여 최소값을 찾아 node를 반환한다
+    private Node<K, V> deleteMin(Node<K, V> node) {
+        if (node.left == null) return node.right;
+        node.left = deleteMin(node.left);
+        return node;
+    }
+
+    public void delete(K key) {
+        root = delete(root, key);
+    }
+    // root를 시작으로 재귀적으로
+    // 어떤 노드를 기준으로 어떤 key값을 지우겠다
+    private Node<K, V> delete(Node<K, V> node, K key) {
+        if (node == null) return node;
+        int compare = key.compareTo(node.key);
+        if (compare == 0) {
+            // 1. left, none
+            if (node.right == null) return node.left;
+            // 2. none
+            if (node.left == null) return node.right;
+
+            // min node의 k, v -> 새 노드로 갱신하는 것(지운다는 의미)
+            Node<K, V> min = min(node.right);
+            deleteMin(node.right);
+            node.key = min.key;
+            node.value = min.value;
+            return node;
+        } else if (compare < 0) {
+            node.left = delete(node, key);
+        } else if (compare > 0) {
+            node.right = delete(node, key);
+        }
+    }
+
     // 생성자
     class Node<K extends Comparable, V> {
         K key;
