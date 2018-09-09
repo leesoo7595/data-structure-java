@@ -21,9 +21,7 @@ public class MyArrayList<E> {
 
     // 데이터를 추가하는 함수
     public void add(E element) {
-        ensuringSize();
-        // size 다음으로 추가됨 -> end도 증가해줘야함!
-        elements[size++] = element;
+        insert(size, element);
     }
 
     // 데이터를 가져오는 함수
@@ -31,6 +29,24 @@ public class MyArrayList<E> {
         // 사이즈와 같거나 큰 값인 index를 조회하면 에러를 낸다(비어잇는 값일 수 있음)
         if (index >= size) throw new NoSuchElementException();
         return (E) elements[index];
+    }
+
+    // 어느 부분에 데이터를 삽입하는 함수
+    public void insert(int index, E element) {
+        // 사이즈보다 큰 값인 index에 추가하려할 때 에러를 낸다
+        if (index > size) throw new IndexOutOfBoundsException();
+
+        // 중간에 index가 추가될 때, 그 뒷 값들은 다 한 칸 씩 미루어주어야함!
+        // 값이 추가되었을 때, 사이즈가 증가되어야하는지 체크
+        ensuringSize();
+        // right shift;
+        // index번째 이전까지 그냥 복사
+        System.arraycopy(elements, 0, elements, 0, index);
+        // index번째 이후로는 나머지 + 1 하고 복사
+        System.arraycopy(elements, index, elements, index + 1, size - index);
+        // 비어있게 된 index번째 자리에 element(새로운 요소)를 넣어준다.
+        elements[index] = element;
+        size++;
     }
 
     // size를 늘려주는 함수
