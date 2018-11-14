@@ -1,4 +1,4 @@
-package com.isooproject;
+package org.isooproject;
 
 public class MyLinkedList<E> {
     // head가 tail을 가리켜야함 (연결시켜야함)

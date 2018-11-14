@@ -1,4 +1,4 @@
-package com.isooproject;
+package org.isooproject;
 
 public class BST<K extends Comparable, V> {
     private Node<K, V> root;

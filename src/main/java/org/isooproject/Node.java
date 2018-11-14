@@ -1,4 +1,4 @@
-package com.isooproject;
+package org.isooproject;
 
 // T: Type E: Element
 public class Node<T> {

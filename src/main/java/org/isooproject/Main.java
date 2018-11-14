@@ -1,4 +1,4 @@
-package com.isooproject;
+package org.isooproject;
 
 public class Main {
 
